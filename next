@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function next(){
+	num="$PWD/num_file";
+	if [ -e $num ];then 
+		next=`cat $num`
+	else	
+		next=0
+	fi
+	echo $next
+	next=`expr $next + 1`
+	echo $next > num_file
+}
+next

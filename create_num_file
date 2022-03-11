@@ -1,0 +1,11 @@
+#!/bin/bash
+
+i=1
+file="$PWD/random_num"
+if [ ! -e $file ];then
+	until [ $i -gt 100 ];
+	do
+		echo $((1 + $RANDOM % 300)) >> random_num
+		let i++
+	done
+fi

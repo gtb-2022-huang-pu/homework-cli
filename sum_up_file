@@ -1,0 +1,9 @@
+#!/bin/bash
+
+input="$PWD/$1"
+sum=0
+while IFS= read -r line
+do
+	sum=`expr $sum + $line`
+done < "$input"
+echo $sum
