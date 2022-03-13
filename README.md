@@ -79,3 +79,36 @@
       done < "$input"
       echo $sum
       ```
+
+6. 删除名为：-delete-me的文件。<img src="assets\delete.jpg" alt="delete">
+
+   ```
+   touch -- -delete-me
+   ll -- -delete-me
+   rm -- -delete-me
+   ```
+
+7. 写一个新的命令，通过定义新的function或者增加新的脚本，都可以。 在命令行中执行：`$ first-commit` 即可以在当前folder创建一个git repo，并把当前的文件提交，提交log为”first commit”。也可以支持参数：`$ first-commit abc`<img src="assets/first.jpg" alt="first-commit">
+
+   ```
+   #!/bin/bash
+   
+   MESSAGE=${1:-first commit}
+   git init
+   git add .
+   git commit -m "$MESSAGE"
+   ```
+
+8. 这里我们要实现一个用户自定义命令（command）：`topc` 。当用户执行该命令时，需要通过参数提供一个包含历史命令的文件 <img src="assets\topc.jpg" alt="topc">
+
+   ```
+   
+   #!/bin/bash
+   
+   declare -r INPUT_FILE="${1}"
+   
+   sed -E 's/ +\| +/\n/g' "${INPUT_FILE}" | sed -E 's/^ +//' | sed -E 's/^(sudo||nohup) +//' | cut -d' ' -f1 | sed -E 's#^.*/##' | grep -E -v '^(ll||ls||cd||cat||vim||echo)$' | awk '{total++; cmds[$1]++;} END{for(cmd in cmds){printf "%d %f %s\n", cmds[cmd], cmds[cmd]/total*100, cmd;}}' | sort -t' ' -k1,1nr -k3,3 | head -n10 | awk '{printf "%4d %6.2f%% %s\n", $1, $2, $3;}'
+   ```
+
+   
+
